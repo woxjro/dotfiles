@@ -10,7 +10,11 @@ function chpwd() { ls -v -F }
 
 setopt nonomatch
 
-alias python='python3'
 alias gad='git add'
 alias gcm='git commit'
 alias gpu='git push'
+
+alias python='python3'
+alias venvn='python -m venv'
+alias venva='source ./bin/activate'
+alias venvd='deactivate'

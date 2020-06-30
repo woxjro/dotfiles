@@ -1,37 +1,57 @@
 set encoding=utf-8
 scriptencoding utf-8
 
-"setting
-"文字コードをUFT-8に設定
-
 set nocompatible
-filetype off
-set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin()
 
-Plugin 'VundleVim/Vundle.vim'
+if has('vim_starting')
+    " 初回起動時のみruntimepathにNeoBundleのパスを指定する
+    set runtimepath+=~/.vim/bundle/neobundle.vim/
 
-" 導入したいプラグインを以下に列挙
-" Plugin '[Github Author]/[Github repo]' の形式で記入
-Plugin 'airblade/vim-gitgutter'
-Plugin 'othree/yajs.vim', { 'for': ['javascript', 'javascript.jsx'] }
-Plugin 'othree/es.next.syntax.vim', { 'for': ['javascript', 'javascript.jsx'] }
-Plugin 'othree/javascript-libraries-syntax.vim', { 'for': ['javascript', 'javascript.jsx'] }
-Plugin 'maxmellon/vim-jsx-pretty', { 'for': ['javascript', 'javascript.jsx'] }
+    " NeoBundleが未インストールであればgit cloneする・・・・・・①
+    if !isdirectory(expand("~/.vim/bundle/neobundle.vim/"))
+        echo "install NeoBundle..."
+        :call system("git clone git://github.com/Shougo/neobundle.vim ~/.vim/bundle/neobundle.vim")
+    endif
+endif
 
-Plugin 'tpope/vim-markdown'
-Plugin 'kannokanno/previm'
-Plugin 'tyru/open-browser.vim'
+call neobundle#begin(expand('~/.vim/bundle/'))
+
+" インストールするVimプラグインを以下に記述
+" NeoBundle自身を管理
+NeoBundleFetch 'Shougo/neobundle.vim'
+"----------------------------------------------------------
+" ここに追加したいVimプラグインを記述する・・・・・・②
+
+NeoBundle 'VundleVim/Vundle.vim'
+NeoBundle 'airblade/vim-gitgutter'
+NeoBundle 'othree/yajs.vim', { 'for': ['javascript', 'javascript.jsx'] }
+NeoBundle 'othree/es.next.syntax.vim', { 'for': ['javascript', 'javascript.jsx'] }
+NeoBundle 'othree/javascript-libraries-syntax.vim', { 'for': ['javascript', 'javascript.jsx'] }
+NeoBundle 'maxmellon/vim-jsx-pretty', { 'for': ['javascript', 'javascript.jsx'] }
+NeoBundle 'tpope/vim-markdown'
+NeoBundle 'kannokanno/previm'
+NeoBundle 'tyru/open-browser.vim'
+NeoBundle 'Yggdroot/indentLine'
 
 
+"----------------------------------------------------------
+call neobundle#end()
 
-call vundle#end()
+" ファイルタイプ別のVimプラグイン/インデントを有効にする
 filetype plugin indent on
+
+" 未インストールのVimプラグインがある場合、インストールするかどうかを尋ねてくれるようにする設定・・・・・・③
+NeoBundleCheck
+
+
+
+
 
 "　その他のカスタム設定を以下に書く
 autocmd BufRead,BufNewFile *.mkd  set filetype=markdown
 autocmd BufRead,BufNewFile *.md   set filetype=markdown
 nnoremap <silent> <C-p> :PrevimOpen<CR> 
+
 let g:vim_markdown_folding_disabled=1
 let g:previm_enable_realtime = 1
 " バックアップファイルを作らない
