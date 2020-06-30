@@ -11,3 +11,5 @@ function chpwd() { ls -v -F }
 setopt nonomatch
 
 alias python='python3'
+alias gadd='git add'
+alias gcmt='git commit'
